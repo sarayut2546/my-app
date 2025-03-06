@@ -11,7 +11,7 @@ const nextConfig = {
       // },
       {
         protocol: "https",
-        hostname: "https://server-g28f.onrender.com",
+        hostname: "server-g28f.onrender.com",
         port: "",
         pathname: "/uploads/**/*",
       },
