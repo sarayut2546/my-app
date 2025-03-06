@@ -9,7 +9,14 @@ const nextConfig = {
         port: "1337",
         pathname: "/uploads/**/*",
       },
+      {
+        protocol: "https",
+        hostname: "server-g28f.onrender.com",
+        port: "",
+        pathname: "/uploads/**/*",
+      },
     ],
+    
   },
 };
 
