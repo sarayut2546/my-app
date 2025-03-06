@@ -1,8 +1,17 @@
 "use client";
 import { fetchApi } from "../../../../utils/fetch"
-import { fetchActionApi } from "../../../../utils/action";
+import { fetchActionApi, setAccessToken } from "../../../../utils/action";
 import { useState } from "react";
-
+import Input from "@/app/components/material/input";
+ 
+interface LoginResponse {
+  jwt: string;
+  user: {
+    id: number;
+    documentId: number;
+  }
+}
+ 
 export default function Login() {
     const [identifier, setIdentifier] = useState("");
     const [password, setPassword] = useState("");
@@ -16,16 +25,19 @@ export default function Login() {
       const res = await fetchActionApi("/api/auth/local", {
         method: "POST",
         body: JSON.stringify(body),
-      });
+      } as any);
       console.log(res);
       if(res) {
           if (res.status === 200) {
+            const token = res.data as LoginResponse
+               await setAccessToken(token.jwt);
               window.location.href = "/";
           } else {
               alert("เข้าสู่ระบบไม่สําเร็จ");
           }
       }
     };
+ 
     return (
       <div className="flex items-center justify-center h-screen bg-gray-100">
         <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-sm">
@@ -33,23 +45,15 @@ export default function Login() {
             เข้าสู่ระบบ
           </h1>
           <form onSubmit={(e) => login(e)}>
-            <div className="mb-4">
-              <label
-                htmlFor="identifier"
-                className="block text-sm font-medium text-gray-700 mb-2"
-              >
-                ชื่อผู้ใช้
-              </label>
-              <input
-                type="text"
-                id="identifier"
-                name="identifier"
-                value={identifier}
-                onChange={(e) => setIdentifier(e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                required
-              />
-            </div>
+            <Input
+              type="text"
+              id="identifier"
+              value={identifier}
+              label="ชื่อผู้ใช้"
+              onChange={(e) => setIdentifier(e.target.value)}
+              required
+            />
+           
             <div className="mb-6">
               <label
                 htmlFor="password"
@@ -63,7 +67,7 @@ export default function Login() {
                 name="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="border"
                 required
               />
             </div>
@@ -77,4 +81,4 @@ export default function Login() {
         </div>
       </div>
     );
-  }
+}

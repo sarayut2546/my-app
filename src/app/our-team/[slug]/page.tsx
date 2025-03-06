@@ -73,7 +73,7 @@ export default async function TeamMemberDetail({
 
     return (
         <div>
-            {teamMember?.blocks.map((block: TeamPageBlock) => (
+            {teamMember && teamMember?.blocks.map((block: TeamPageBlock) => (
                 <BlockRenderer key={block.id} block={block} />
             ))}
         </div>
